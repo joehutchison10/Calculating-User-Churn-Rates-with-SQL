@@ -11,7 +11,7 @@ I will now break down this query to explain my approach to this problem.
 
 
 
-# To see the column names, and then to identify which months Churn Rate can be calculated for. 
+## To see the column names, and then to identify which months Churn Rate can be calculated for. 
 
 SELECT *
  FROM subscriptions
@@ -23,7 +23,7 @@ SELECT *
 
 
 
-# I have identified that we have complete months for January, February, and March. Thus we can create a temporary table for them, and CROSS JOIN (combine) it with our orginal subscription table. This will create a another temporary table, where each row of our subscription table will be combined with a start and end date for each month! 
+## I have identified that we have complete months for January, February, and March. Thus we can create a temporary table for them, and CROSS JOIN (combine) it with our orginal subscription table. This will create a another temporary table, where each row of our subscription table will be combined with a start and end date for each month! 
 
 
 WITH months AS 
@@ -45,7 +45,7 @@ FROM subscriptions
 CROSS JOIN months),
 
 
-# Now we can compare the start and end date for each month, with the specific subscription start and end for each ID (customer) in our original subscription table. When the subscription start occured before the start of the month, we can assign a 1. When the subscription start occured after the start of the month, we can assign a 0. Similarly, if the subscription end occured between the starting and ending day of a month, we can assign a 1 and if not, 0.  
+## Now we can compare the start and end date for each month, with the specific subscription start and end for each ID (customer) in our original subscription table. When the subscription start occured before the start of the month, we can assign a 1. When the subscription start occured after the start of the month, we can assign a 0. Similarly, if the subscription end occured between the starting and ending day of a month, we can assign a 1 and if not, 0.  
 
 
 status AS
@@ -76,7 +76,7 @@ FROM cross_join),
 
 
 
-# Now we have a binary status for customers who are subscribed and unsubscribed, during January, February and March. Thus we can tally unsubscribed and subscribed customers for each month using the "GROUP BY" month command, and then do the maths!     
+## Now we have a binary status for customers who are subscribed and unsubscribed, during January, February and March. Thus we can tally unsubscribed and subscribed customers for each month using the "GROUP BY" month command, and then do the maths!     
 
 
 
