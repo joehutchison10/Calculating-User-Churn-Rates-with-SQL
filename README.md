@@ -6,7 +6,7 @@ In this project, Churn Rate was calculated for January, Februrary and March for 
 
 The database used was self-created, which is named subscriptions. It has the columns: id, subscription_start, subscription_end, and segment.  
 
-I will now break down this query to explain my approach to this problem. 
+I will now explain the technical approach to this problem. 
 
 ### To see the column names of the dataset, and then to identify which months Churn Rate can be calculated for. 
 
