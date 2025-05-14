@@ -44,11 +44,11 @@ END as is_active_30,
 CASE 
   WHEN subscription_end BETWEEN first_day AND last_day AND segment = 87 THEN 1
   ELSE 0
-END as is_canceled_87,
+END as is_cancelled_87,
 CASE 
   WHEN subscription_end BETWEEN first_day AND last_day AND segment = 30 THEN 1
   ELSE 0
-END as is_canceled_30
+END as is_cancelled_30
 FROM cross_join),
 
 status_aggregate AS
@@ -56,11 +56,11 @@ status_aggregate AS
   month,
   SUM(is_active_87) as sum_active_87,
   SUM(is_active_30) as sum_active_30,
-  SUM(is_canceled_87) as sum_canceled_87,
-  SUM(is_canceled_30) as sum_canceled_30
+  SUM(is_cancelled_87) as sum_cancelled_87,
+  SUM(is_cancelled_30) as sum_cancelled_30
 FROM status
 GROUP BY month)
-SELECT month, 1.0 * sum_canceled_87 / sum_active_87 as churn_rate_87, 1.0 * sum_canceled_30 / sum_active_30 as churn_rate_30
+SELECT month, 1.0 * sum_cancelled_87 / sum_active_87 as churn_rate_87, 1.0 * sum_cancelled_30 / sum_active_30 as churn_rate_30
 FROM status_aggregate; 
 
 
