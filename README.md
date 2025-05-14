@@ -2,16 +2,11 @@
 
 Churn Rate measures the percentage of customers who have canceled their subscription of a company's product or service. Churn rate is a logical way to track the performance of a business which relies on profit from subscriptions.       
 
-In this example, Churn Rate was calculated each month. Mathematically this was computed as the number of user cancelations in a month, divided by the number of active subscribers, multiplied by 100. Cancelations were defined as a subscription termination occurring between the starting and ending date of a given month. Moreover, the number of active users were counted up to the start date of a given month. 
-
-
+In this project, Churn Rate was calculated for January, Februrary and March for two hypothetical segments of customers, 30 and 87. In the real world, these segments could represent customer populations with different demographic characteristics. Mathematically, Churn Rate was computed as the number of user cancelations from the start to end of a given month, divided by the number of active subscribers up to the start date of that month, multiplied by 100.  The database used was self-created. 
 
 I will now break down this query to explain my approach to this problem. 
 
-
-
-
-### To see the column names, and then to identify which months Churn Rate can be calculated for. 
+### To see the column names of the dataset, and then to identify which months Churn Rate can be calculated for. 
 
 SELECT *
  FROM subscriptions
@@ -22,8 +17,7 @@ SELECT *
  LIMIT 100; 
 
 
-
-### I have identified that we have complete months for January, February, and March. Thus we can create a temporary table for them, and CROSS JOIN (combine) it with our orginal subscription table. This will create a another temporary table, where each row of our subscription table will be combined with a start and end date for each month! 
+### We have complete months for January, February, and March. Thus we can create a temporary table for them, and CROSS JOIN (combine) it with our orginal subscription table. This will create a new temporary table called cross_join, where each row of our subscription table will be combined with a start and end date for each month! 
 
 
 WITH months AS 
@@ -45,7 +39,7 @@ FROM subscriptions
 CROSS JOIN months),
 
 
-### Now we can compare the start and end date for each month, with the specific subscription start and end for each ID (customer) in our original subscription table. When the subscription start occured before the start of the month, we can assign a 1. When the subscription start occured after the start of the month, we can assign a 0. Similarly, if the subscription end occured between the starting and ending day of a month, we can assign a 1 and if not, 0.  
+### This code assesses our cross_join temporary table, and sorts customers according to their segments and subscription start/end dates. We have two different CASE statements, which are designed to uniquely sort customers into segment 87 or 30, and assess if the customers subscription start date occurs before the start date of a given month: if it does we assign a 1, if it doesn't we assign a 0. The output of these CASE statements are stored as either is_active_87 or is_active_30 column in our new status table. Similarly, we have two different CASE statements which assess whether a customer's subscription end occured between the starting and ending day of a month, where a 1 is assigned, or a 0 if not. Again, these CASE statements sort customers into their respective segments, with their output stored in the is_canceled_87 or is_canceled_30 columns of this new status table. 
 
 
 status AS
@@ -76,14 +70,14 @@ FROM cross_join),
 
 
 
-### Now we have a binary status for customers who are subscribed and unsubscribed, during January, February and March. Thus we can tally unsubscribed and subscribed customers for each month using the "GROUP BY" month command, and then do the maths!     
+### Now we have a binary status for each customer, who is sorted by their segment, representing if they are subscribed or unsubscribed, during January, February and March. Using SUM, we can now tally unsubscribed and subscribed customers for each month using the "GROUP BY" month command, and plug the output into our Churn Rate equation!. 
 
 
 
 status_aggregate AS
 (SELECT
   month,
-  SUM(is_active_87) as sum_active_87,
+  SUM(is_active_87) as sum_active_87,by 
   SUM(is_active_30) as sum_active_30,
   SUM(is_canceled_87) as sum_canceled_87,
   SUM(is_canceled_30) as sum_canceled_30
