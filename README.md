@@ -2,7 +2,9 @@
 
 Churn Rate measures the percentage of customers who have canceled their subscription of a company's product or service. Churn rate is a logical way to track the performance of a business which relies on profit from subscriptions.       
 
-In this project, Churn Rate was calculated for January, Februrary and March for two hypothetical segments of customers, 30 and 87. In the real world, these segments could represent customer populations with different demographic characteristics. Mathematically, Churn Rate was computed as the number of user cancelations from the start to end of a given month, divided by the number of active subscribers up to the start date of that month, multiplied by 100.  The database used was self-created. 
+In this project, Churn Rate was calculated for January, Februrary and March for two hypothetical segments of customers, 30 and 87. In the real world, these segments could represent customer populations with different demographic characteristics. Mathematically, Churn Rate was computed as the number of user cancelations from the start to end of a given month, divided by the number of active subscribers up to the start date of that month, multiplied by 100. 
+
+The database used was self-created, which is named subscriptions. It has the columns: id, subscription_start, subscription_end, and segment.  
 
 I will now break down this query to explain my approach to this problem. 
 
